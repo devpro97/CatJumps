@@ -22,7 +22,7 @@ var phisicalEngine = new PhisicalEngine();
 var MainLoop = setInterval(MAIN_LOOP, mainLoopDelay);
 
 var windowResizer = new WindowResizer(canva);
-var frameCouter = new FramerateCounter();
+var frameCounter = new FramerateCounter();
 
 window.onload = initOpjects;
 window.onresize = windowResizer.tryResize;

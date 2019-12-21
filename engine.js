@@ -1,7 +1,6 @@
 class Engine{
-	constructor(){
-	}
-	work = function(){
+	constructor(){}
+	work(){
 		this.proceedStatics();
 		this.proceedDynamics();
 	}	
@@ -21,19 +20,19 @@ class GraphicEngine extends Engine{
 		super.work();
 	}
 
-	proceedStatics = function(){
+	proceedStatics(){
 		Statics.forEach(element => {
 			element.renderSelf(this.ctx, this.xK, this.yK);
 		});
 	}
 
-	proceedDynamics = function(){
+	proceedDynamics(){
 		Dynamics.forEach(element => {
 			element.renderSelf(this.ctx, this.xK, this.yK);
 		});
 	}
 	
-	drawBackground = function(){
+	drawBackground(){
 		this.ctx.drawImage(Pics['BG'], 0, 0, 800 * this.xK, 800 * this.yK);
 		if(frameCounter)
 			frameCounter.framesCalled++;
@@ -41,15 +40,13 @@ class GraphicEngine extends Engine{
 }
 
 class PhisicalEngine extends Engine{
-	constructor(){
-		super();
-	}
+	constructor(){super();}
 	proceedStatics = function(){
 		Statics.forEach(element => {
 			element.Y += 0.25;
 		});
 	}
-	proceedDynamics = function(){
+	proceedDynamics(){
 		Dynamics.forEach(element => {
 			var collideAccel = element.jumpIfCollide(Statics);
 			if(collideAccel){
