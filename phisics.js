@@ -60,17 +60,18 @@ class ObjDynamic extends Obj{
         this.speed.Yval = 0;
     }
     jumpIfCollide = function(staticsList){
-        var acc = null;
-        var bx = this.baseX() + this.speed.Xval;
-        var by = this.baseY() + this.speed.Yval;
-        staticsList.forEach(stat => {
-            if (stat.X < bx && (stat.X + stat.width) > bx){
-                if (stat.Y > this.baseY() && stat.Y < by){
-                    acc = JUMP_SRENGTH;
+        var jumpStrength = null;
+        var nextX = this.baseX() + this.speed.Xval;
+        var nextY = this.baseY() + this.speed.Yval;
+        staticsList.forEach(obstacle => {
+            if (obstacle.X < nextX && (obstacle.X + obstacle.width) > nextX){
+                var obstacleFacticY = obstacle.Y + Math.ceil(obstacle.heigth / 2);
+                if (obstacleFacticY > this.baseY() && obstacleFacticY < nextY){
+                    jumpStrength = JUMP_SRENGTH;
                 }
             }
         });
-        return acc;
+        return jumpStrength;
     }
 }
 class Speed{

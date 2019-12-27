@@ -23,9 +23,10 @@ var MainLoop = setInterval(MAIN_LOOP, mainLoopDelay);
 
 var windowResizer = new WindowResizer(canva);
 var frameCounter = new FramerateCounter();
+frameCounter.start();
 
 window.onload = initOpjects;
-window.onresize = windowResizer.tryResize;
+window.onresize = () => windowResizer.tryResize();
 document.addEventListener("keydown", downHandler);
 document.addEventListener("keyup", upHandler);
 windowResizer.resizeToScreen();
@@ -36,4 +37,41 @@ function  MAIN_LOOP() {
 
 	graphicEngine.work(xK, yK);
 	phisicalEngine.work();
+}
+
+
+function initOpjects(){
+    addPic('flat',  'content/flat.png',     256, 50);
+    addPic('purG',   'content/glasses.png',  506, 317);
+    addPic('BG',    'content/BG.jpg',       600, 1422);
+
+    this.Dynamics = [
+        new ObjDynamic(0, 127, 80, 'purG')
+    ];
+    this.Statics = [
+        new ObjStatic(0, 256, 50, 'flat', 450, 500),
+        new ObjStatic(1, 256, 50, 'flat', 0, 700),
+    ]
+
+    function addPic(id, url, width, heigth){
+        this.Pics[id] = new Image(width, heigth);
+        this.Pics[id].src=url;
+    }
+}
+
+function downHandler(e) {
+    if (e.key == "ArrowLeft"){
+        isKeyLeft = true;
+    }
+    if (e.key == "ArrowRight"){
+        isKeyRight = true;
+    }
+}
+function upHandler(e) {
+    if (e.key == "ArrowLeft"){
+        isKeyLeft = false;
+    }
+    if (e.key == "ArrowRight"){
+        isKeyRight = false;
+    }
 }
