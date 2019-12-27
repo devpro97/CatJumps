@@ -59,3 +59,21 @@ class WindowResizer{
 		return this.frameY / this.baseFrameY
 	}
 }
+class Factory{
+	constructor(){
+		this.dynId = 0;
+		this.statId = 0;
+		this.basicStatWidth = 256;
+		this.basicStatHeight = 50;
+	}
+	makeRandomStatic(picId = 'flat', Y = 0){
+		this.statId++;
+		var rnd = Math.random();
+		var x = rnd * (FIELD_X - this.basicStatWidth);
+		return new ObjStatic(this.statId, this.basicStatWidth, this.basicStatHeight, picId, x, Y);
+	}
+	makeNewStatic(width, heigth, picId, X = 0, Y = 0){
+		this.statId++;
+		return new ObjStatic(this.statId, width, heigth, picId, X, Y);
+	}
+}

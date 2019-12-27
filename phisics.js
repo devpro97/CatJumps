@@ -85,3 +85,13 @@ class Speed{
     }
 }
 class Acceleration extends Speed{}
+
+class Sprite{
+    constructor(source, width, heigth){
+        this.width = width;
+        this.heigth = heigth;
+        
+        this.picture = new Image(width, heigth);
+        this.picture.src=source;
+    }
+}

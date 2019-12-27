@@ -8,6 +8,13 @@ var ACCEL_LEFT = new Acceleration(0.5, 0);
 var NO_ACCELERATON = new Acceleration(0, 0);
 var DECCELERATION = 0.3;
 
+var STATIC_SPEED = 0.25;
+
+var FIELD_X = 800;
+var FIELD_Y = 800;
+var MIN_DISTANCE_BETWEEN_BLOCKS = 150;
+
+var factory = new Factory();
 var Pics = [];
 var Dynamics = [];
 var Statics = [];
@@ -41,17 +48,22 @@ function  MAIN_LOOP() {
 
 
 function initOpjects(){
-    addPic('flat',  'content/flat.png',     256, 50);
+    addPic('flat',   'content/flat.png',     256, 50);
     addPic('purG',   'content/glasses.png',  506, 317);
-    addPic('BG',    'content/BG.jpg',       600, 1422);
+    addPic('BG',     'content/BG.jpg',       600, 1422);
 
     this.Dynamics = [
-        new ObjDynamic(0, 127, 80, 'purG')
-    ];
+        new ObjDynamic(0, 127, 80, 'purG', 300, 550)
+	];
+	var ycoord = 725;
     this.Statics = [
-        new ObjStatic(0, 256, 50, 'flat', 450, 500),
-        new ObjStatic(1, 256, 50, 'flat', 0, 700),
-    ]
+        factory.makeNewStatic(256, 50, 'flat', 300, ycoord)
+	]
+	while(ycoord>0){
+		ycoord -= MIN_DISTANCE_BETWEEN_BLOCKS;
+		var st = factory.makeRandomStatic('flat', ycoord);
+		Statics.push(st);
+	}
 
     function addPic(id, url, width, heigth){
         this.Pics[id] = new Image(width, heigth);

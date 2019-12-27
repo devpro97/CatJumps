@@ -10,30 +10,30 @@ class GraphicEngine extends Engine{
 	constructor(context){
 		super();
 		this.ctx = context;
-		this.xK = 1;
-		this.yK = 1;
+		this.kX = 1;
+		this.kY = 1;
 	}
-	work(xK, yK){
-		this.xK = xK;
-		this.yK = yK;
+	work(kX, kY){
+		this.kX = kX;
+		this.kY = kY;
 		this.drawBackground();
 		super.work();
 	}
 
 	proceedStatics(){
 		Statics.forEach(element => {
-			element.renderSelf(this.ctx, this.xK, this.yK);
+			element.renderSelf(this.ctx, this.kX, this.kY);
 		});
 	}
 
 	proceedDynamics(){
 		Dynamics.forEach(element => {
-			element.renderSelf(this.ctx, this.xK, this.yK);
+			element.renderSelf(this.ctx, this.kX, this.kY);
 		});
 	}
 	
 	drawBackground(){
-		this.ctx.drawImage(Pics['BG'], 0, 0, 800 * this.xK, 800 * this.yK);
+		this.ctx.drawImage(Pics['BG'], 0, 0, FIELD_X * this.kX, FIELD_Y * this.kY);
 		if(frameCounter)
 			frameCounter.framesCalled++;
 	}
@@ -41,10 +41,22 @@ class GraphicEngine extends Engine{
 
 class PhisicalEngine extends Engine{
 	constructor(){super();}
+
 	proceedStatics = function(){
+		var topElemY = FIELD_Y;
+
 		Statics.forEach(element => {
-			element.Y += 0.25;
+			element.Y += STATIC_SPEED;
+			if(element.Y < topElemY)
+				topElemY = element.Y;
+			if(element.Y > FIELD_Y){
+				var index = Statics.indexOf(element);
+				Statics.splice(index, 1);
+			}
 		});
+		if(topElemY > MIN_DISTANCE_BETWEEN_BLOCKS){
+			Statics.push(factory.makeRandomStatic('flat', ));
+		}
 	}
 	proceedDynamics(){
 		Dynamics.forEach(element => {
