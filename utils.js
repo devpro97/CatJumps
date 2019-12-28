@@ -16,7 +16,7 @@ class FramerateCounter{
 	start(_delay = 1000){
 		if(_delay <= 0)
 			this.delay = _delay;
-        this.fpsCountTimer = setInterval(() => frameCounter.frameCount(), this.delay);
+        this.fpsCountTimer = setInterval(() => game.frameCounter.frameCount(), this.delay);
 	}
 	frameCount(){
 		if (this.delay == 1000){
@@ -59,6 +59,7 @@ class WindowResizer{
 		return this.frameY / this.baseFrameY
 	}
 }
+
 class Factory{
 	constructor(){
 		this.dynId = 0;
@@ -69,11 +70,63 @@ class Factory{
 	makeRandomStatic(picId = 'flat', Y = 0){
 		this.statId++;
 		var rnd = Math.random();
-		var x = rnd * (FIELD_X - this.basicStatWidth);
-		return new ObjStatic(this.statId, this.basicStatWidth, this.basicStatHeight, picId, x, Y);
+		var x = rnd * (game.FIELD_X - this.basicStatWidth);
+		return new Platform(this.statId, this.basicStatWidth, this.basicStatHeight, picId, x, Y);
 	}
 	makeNewStatic(width, heigth, picId, X = 0, Y = 0){
 		this.statId++;
-		return new ObjStatic(this.statId, width, heigth, picId, X, Y);
+		return new Platform(this.statId, width, heigth, picId, X, Y);
 	}
+}
+
+
+function addPics(){
+    addPic('flat',              'flat.png',     256, 50);
+    addPic('purWithGlasses',    'glasses.png',  506, 317);
+    addPic('pursheen',          'pursheen.png', 506, 317);
+    addPic('BG1',               'night.jpg',    600, 1422);
+    addPic('BG2',               'day.jpg',      600, 1422);
+    function addPic(id, url, width, heigth){
+        this.Pics[id] = new Sprite(url, width, heigth);
+    }
+}
+function addKeyHandlers() {   
+    window.addEventListener("keydown", handleKeyDown);
+    window.addEventListener("keyup", handleKeyUp);
+    canva.addEventListener("touchstart", handleTouch, false);
+    canva.addEventListener("touchend", handleUntouch, false);
+}
+
+function handleKeyDown(e) {
+    if (e.key == "ArrowLeft"){
+        isKeyLeft = true;
+    }
+    if (e.key == "ArrowRight"){
+        isKeyRight = true;
+    }
+}
+function handleKeyUp(e) {
+    if (e.key == "ArrowLeft"){
+        isKeyLeft = false;
+    }
+    if (e.key == "ArrowRight"){
+        isKeyRight = false;
+    }
+}
+
+function handleTouch(evt) {
+    evt.preventDefault();
+    var touch = evt.changedTouches[0];
+    var halfWidth =  document.width/2;
+    if (touch.pageX <= halfWidth){
+        isKeyLeft = false;
+    }
+    if (touch.pageX > halfWidth){
+        isKeyRight = false;
+    }
+}
+function handleUntouch(evt) {
+    evt.preventDefault();
+    isKeyLeft = false;
+    isKeyRight = false;
 }

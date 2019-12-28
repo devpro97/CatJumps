@@ -1,41 +1,41 @@
 class Engine{
 	constructor(){}
 	work(){
-		this.proceedStatics();
 		this.proceedDynamics();
+		this.proceedStatics();
 	}	
 }
 
 class GraphicEngine extends Engine{
-	constructor(context){
+	constructor(context, backGround){
 		super();
 		this.ctx = context;
 		this.kX = 1;
 		this.kY = 1;
+		this.backGround = backGround;
 	}
 	work(kX, kY){
 		this.kX = kX;
 		this.kY = kY;
 		this.drawBackground();
-		super.work();
+		this.proceedStatics();
+		this.proceedDynamics();
 	}
 
 	proceedStatics(){
-		Statics.forEach(element => {
+		game.Platforms.forEach(element => {
 			element.renderSelf(this.ctx, this.kX, this.kY);
 		});
 	}
 
 	proceedDynamics(){
-		Dynamics.forEach(element => {
-			element.renderSelf(this.ctx, this.kX, this.kY);
-		});
+		game.Cat.renderSelf(this.ctx, this.kX, this.kY);
 	}
 	
 	drawBackground(){
-		this.ctx.drawImage(Pics['BG'], 0, 0, FIELD_X * this.kX, FIELD_Y * this.kY);
-		if(frameCounter)
-			frameCounter.framesCalled++;
+		this.ctx.drawImage(this.backGround.picture(), 0, 0, game.FIELD_X * this.kX, game.FIELD_Y * this.kY);
+		if(game.frameCounter)
+			game.frameCounter.framesCalled++;
 	}
 }
 
@@ -43,40 +43,38 @@ class PhisicalEngine extends Engine{
 	constructor(){super();}
 
 	proceedStatics = function(){
-		var topElemY = FIELD_Y;
+		var topElemY = game.FIELD_Y;
 
-		Statics.forEach(element => {
-			element.Y += STATIC_SPEED;
+		game.Platforms.forEach(element => {
+			element.Y += game.STATIC_SPEED;
 			if(element.Y < topElemY)
 				topElemY = element.Y;
-			if(element.Y > FIELD_Y){
-				var index = Statics.indexOf(element);
-				Statics.splice(index, 1);
+			if(element.Y > game.FIELD_Y){
+				var index = game.Platforms.indexOf(element);
+				game.Platforms.splice(index, 1);
 			}
 		});
-		if(topElemY > MIN_DISTANCE_BETWEEN_BLOCKS){
-			Statics.push(factory.makeRandomStatic('flat', ));
+		if(topElemY > game.MIN_DISTANCE_BETWEEN_BLOCKS){
+			game.Platforms.push(game.factory.makeRandomStatic('flat'));
 		}
 	}
 	proceedDynamics(){
-		Dynamics.forEach(element => {
-			var collideAccel = element.jumpIfCollide(Statics);
-			if(collideAccel){
-				element.stopSelfY()
-				element.accelerate(collideAccel);
-			}
-			if(isKeyRight){
-				element.accelerate(ACCEL_LEFT);
-			}
-			if(isKeyLeft){
-				element.accelerate(ACCEL_RIGTH);
-			}
-			if(!isKeyRight && !isKeyRight) {
-				element.deccelerate();
-			}
-			element.accelerate(GRAVITY);
-			element.moveSelf();
-		});
+		var collideAccel = game.Cat.jumpIfCollide(game.Platforms);
+		if(collideAccel){
+			game.Cat.stopSelfY()
+			game.Cat.accelerate(collideAccel);
+		}
+		if(isKeyRight){
+			game.Cat.accelerate(game.ACCEL_LEFT);
+		}
+		if(isKeyLeft){
+			game.Cat.accelerate(game.ACCEL_RIGTH);
+		}
+		if(!isKeyRight && !isKeyRight) {
+			game.Cat.deccelerate(game.DECCELERATION);
+		}
+		game.Cat.accelerate(game.GRAVITY);
+		game.Cat.moveSelf();
 	}	
 	
 }

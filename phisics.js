@@ -5,7 +5,7 @@ class Obj{
         this.Y = Y;
         this.width = width;
         this.heigth = heigth;
-        this.text = Pics[picId];
+        this.sprite = Pics[picId];
         this.baseX = function() {
             return (this.X + this.width/2) 
         }
@@ -14,15 +14,15 @@ class Obj{
         }
     }
     renderSelf = function(context, xCoef, yCoef) {
-        context.drawImage(this.text, this.X * xCoef, this.Y * yCoef, this.width * xCoef, this.heigth * yCoef);
+        context.drawImage(this.sprite.picture(), this.X * xCoef, this.Y * yCoef, this.width * xCoef, this.heigth * yCoef);
     }
 }
-class ObjStatic extends Obj{
+class Platform extends Obj{
     constructor(id, width, heigth, picId, X = 0, Y = 0){
         super(id, width, heigth, picId, X, Y);
     }
 }
-class ObjDynamic extends Obj{
+class aCat extends Obj{
     constructor(id, width, heigth, picId, X = 0, Y = 0, speed = null){
         super(id, width, heigth, picId, X, Y);
         this.speed = new Speed();
@@ -34,21 +34,22 @@ class ObjDynamic extends Obj{
         this.speed.accelerate(this.acceleration);
         this.acceleration = new Acceleration();
         this.X += this.speed.Xval;
+        var newY = this.Y + this.speed.Yval;
         this.Y += this.speed.Yval;
     }
     accelerate = function(accel) {
         this.speed.accelerate(accel);
     }
-    deccelerate = function() {
+    deccelerate = function(deccel) {
         if(this.speed.Xval > 0){
-            this.acceleration.Xval -= DECCELERATION;
+            this.acceleration.Xval -= deccel;
             return;
         }
         if(this.speed.Xval < 0){
-            this.acceleration.Xval += DECCELERATION;
+            this.acceleration.Xval += deccel;
             return;
         }
-        if(Math.abs(this.speed.Xval) <= DECCELERATION){
+        if(Math.abs(this.speed.Xval) <= deccel){
             this.speed.Xval = 0;
             return;
         }
@@ -67,7 +68,7 @@ class ObjDynamic extends Obj{
             if (obstacle.X < nextX && (obstacle.X + obstacle.width) > nextX){
                 var obstacleFacticY = obstacle.Y + Math.ceil(obstacle.heigth / 2);
                 if (obstacleFacticY > this.baseY() && obstacleFacticY < nextY){
-                    jumpStrength = JUMP_SRENGTH;
+                    jumpStrength = game.JUMP_SRENGTH;
                 }
             }
         });
@@ -85,13 +86,3 @@ class Speed{
     }
 }
 class Acceleration extends Speed{}
-
-class Sprite{
-    constructor(source, width, heigth){
-        this.width = width;
-        this.heigth = heigth;
-        
-        this.picture = new Image(width, heigth);
-        this.picture.src=source;
-    }
-}
