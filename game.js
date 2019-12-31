@@ -1,5 +1,5 @@
 class Constants{
-    constructor(winCondition = -3000, ){
+    constructor(){
         this.JUMP_SRENGTH = new Acceleration(0, -15);
         this.GRAVITY = new Acceleration(0, 0.5);
         this.ACCEL_RIGTH = new Acceleration(-0.5, 0);
@@ -11,31 +11,34 @@ class Constants{
         this.FIELD_Y = 800;
         this.MIN_DISTANCE_BETWEEN_BLOCKS = 150;
         this.CAT_MAX_HEIGTH = 300;
-
+        
         this.RENDER_DISTANCE = 800;
     }
 }
 class Game{
-    constructor(winCondition = -3000, ){
-        this.winCondition = -3000;
+    constructor(winCondition, catSpriteId, bgId, hardness = 1){
+        this.winCondition = winCondition;
         this.factory = new Factory();
         this.Platforms = [];
-        this.Cat;
+        this.Cat = catSpriteId;
         this.Stormy;
         this.Camera = new Camera();
-
+        
         this.fps = 60;
         this.mainLoopDelay = 1000 / this.fps;
         
-        this.graphicEngine = new GraphicEngine(ctx, Pics['BG1'], this.winCondition, this.Camera);
+        this.graphicEngine = new GraphicEngine(ctx, Pics[bgId], this.winCondition, this.Camera);
         this.phisicalEngine = new PhisicalEngine();
         this.GraphicLoop = null;
         this.PhisicsLoop = null;
-
+        
         this.frameCounter = new FramerateCounter();
+        constants.GRAVITY.Yval *= (2 + hardness) / 3;
+        constants.JUMP_SRENGTH.Yval *= (2 + hardness) / 3;
+        constants.MIN_DISTANCE_BETWEEN_BLOCKS *= (1 + hardness) / 2;
     }
     startup(){
-        this.Cat = new aCat(0, 169, 105, 'pursheen', 300, 550);
+        this.Cat = new aCat(0, 169, 105, this.Cat, 300, 550);
 //        this.Stormy = new aCat(1, 169, 105, 'stormy',  300, 550);
 
         var ycoord = 725;

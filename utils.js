@@ -31,10 +31,10 @@ class FramerateCounter{
 
 class WindowResizer{
 	constructor(canva){
-		this.frameX = canva.width;
-		this.frameY = canva.height;
-		this.baseFrameX = canva.width;
-		this.baseFrameY = canva.height;
+		this.frameX = constants.FIELD_X;
+		this.frameY = constants.FIELD_Y;
+		this.baseFrameX = constants.FIELD_X;
+		this.baseFrameY = constants.FIELD_Y;
 		this.windowToResize = canva;
 		this.resizeTimer = null;
 	}
