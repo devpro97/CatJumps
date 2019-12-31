@@ -11,6 +11,7 @@ addKeyHandlers();
 
 var Pics = [];
 addPics();
+var picturer = new Picturer(ctx);
 
 var game = new Game();
 game.startup();

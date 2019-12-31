@@ -7,14 +7,11 @@ class Obj{
         this.heigth = heigth;
         this.sprite = Pics[picId];
         this.baseX = function() {
-            return (this.X + this.width/2) 
+            return (this.X + this.width / 2) 
         }
         this.baseY = function() {
             return this.Y + this.heigth;
         }
-    }
-    renderSelf = function(context, xCoef, yCoef) {
-        context.drawImage(this.sprite.picture(), this.X * xCoef, this.Y * yCoef, this.width * xCoef, this.heigth * yCoef);
     }
 }
 class Platform extends Obj{
@@ -30,17 +27,17 @@ class aCat extends Obj{
             this.speed = speed;
         this.acceleration = new Acceleration();
     }
-    moveSelf = function() {
+    moveSelf() {
         this.speed.accelerate(this.acceleration);
         this.acceleration = new Acceleration();
         this.X += this.speed.Xval;
         var newY = this.Y + this.speed.Yval;
         this.Y += this.speed.Yval;
     }
-    accelerate = function(accel) {
+    accelerate(accel) {
         this.speed.accelerate(accel);
     }
-    deccelerate = function(deccel) {
+    deccelerate(deccel) {
         if(this.speed.Xval > 0){
             this.acceleration.Xval -= deccel;
             return;
@@ -54,21 +51,28 @@ class aCat extends Obj{
             return;
         }
     }
-    stopSelfX = function() {        
+    stopSelfX(){        
         this.speed.Xval = 0;
     }
-    stopSelfY = function() {        
+    stopSelfY(){
         this.speed.Yval = 0;
     }
-    jumpIfCollide = function(staticsList){
+    jumpIfCollide(staticsList){
         var jumpStrength = null;
-        var nextX = this.baseX() + this.speed.Xval;
-        var nextY = this.baseY() + this.speed.Yval;
+        var baseX = this.baseX();
+        var baseY = this.baseY();
+        var nextX = baseX + this.speed.Xval;
+        var nextY = baseY + this.speed.Yval;
         staticsList.forEach(obstacle => {
             if (obstacle.X < nextX && (obstacle.X + obstacle.width) > nextX){
                 var obstacleFacticY = obstacle.Y + Math.ceil(obstacle.heigth / 2);
-                if (obstacleFacticY > this.baseY() && obstacleFacticY < nextY){
-                    jumpStrength = game.JUMP_SRENGTH;
+                if (obstacleFacticY > baseY)
+                {
+                    //console.log('id=' + obstacle.id + ' FacticY=' + obstacleFacticY + ' nexty=' + nextY + ' baseY='+ this.baseY());
+                    if(obstacleFacticY <= nextY)
+                    {
+                        jumpStrength = game.JUMP_SRENGTH;
+                    }
                 }
             }
         });

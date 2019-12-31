@@ -7,7 +7,7 @@ class Game{
         this.NO_ACCELERATON = new Acceleration(0, 0);
         this.DECCELERATION = 0.3;
 
-        this.STATIC_SPEED = 1;
+        this.RENDER_DISTANCE = 800;
 
         this.FIELD_X = 800;
         this.FIELD_Y = 800;
@@ -17,6 +17,7 @@ class Game{
         this.factory = new Factory();
         this.Platforms = [];
         this.Cat;
+        this.Camera = new Camera();
 
         this.fps = 60;
         this.mainLoopDelay = 1000 / this.fps;
@@ -29,7 +30,7 @@ class Game{
         this.frameCounter = new FramerateCounter();
     }
     startup(){
-        this.Cat = new aCat(0, 127, 80, 'pursheen', 300, 550);
+        this.Cat = new aCat(0, 169, 105, 'pursheen', 300, 550);
         var ycoord = 725;
         this.Platforms = [
             this.factory.makeNewStatic(256, 50, 'flat', 300, ycoord)
@@ -41,13 +42,13 @@ class Game{
         }
     }
     startGame(){
-        this.GraphicLoop = setInterval(() => this.graphicsLoop(), this.mainLoopDelay);
         this.PhisicsLoop = setInterval(() => this.phisicsLoop(), this.mainLoopDelay);
+        this.GraphicLoop = setInterval(() => this.graphicsLoop(), this.mainLoopDelay);
         this.frameCounter.start();
     }
     pauseGame(){
-        clearInterval(GraphicLoop);
-        clearInterval(PhisicsLoop);
+        clearInterval(this.GraphicLoop);
+        clearInterval(this.PhisicsLoop);
         this.frameCounter.stop();
     }
     graphicsLoop() {
@@ -57,5 +58,12 @@ class Game{
     }
     phisicsLoop(){
         this.phisicalEngine.work();
+        if(this.phisicalEngine.isCatFelt() == true){
+            this.gameOver();
+        }
+    }
+    gameOver(){
+        this.pauseGame();
+        picturer.appear(3000, Pics['falling'].picture());    
     }
 }
