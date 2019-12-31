@@ -93,8 +93,8 @@ function addPics(){
 function addKeyHandlers() {   
     window.addEventListener("keydown", handleKeyDown);
     window.addEventListener("keyup", handleKeyUp);
-    canva.addEventListener("touchstart", handleTouch, false);
-    canva.addEventListener("touchend", handleUntouch, false);
+    window.addEventListener("touchstart", handleTouch, false);
+    window.addEventListener("touchend", handleUntouch, false);
 }
 
 function handleKeyDown(e) {
@@ -117,12 +117,12 @@ function handleKeyUp(e) {
 function handleTouch(evt) {
     evt.preventDefault();
     var touch = evt.changedTouches[0];
-    var halfWidth =  document.width/2;
+    var halfWidth =  window.innerWidth / 2;
     if (touch.pageX <= halfWidth){
-        isKeyLeft = false;
+        isKeyLeft = true;
     }
     if (touch.pageX > halfWidth){
-        isKeyRight = false;
+        isKeyRight = true;
     }
 }
 function handleUntouch(evt) {
