@@ -42,7 +42,7 @@ class GraphicEngine extends Engine{
 	
 	drawBackground(){
 		if(this.backGround.heigth > game.FIELD_Y){
-			var sourceY = this.backGround.heigth - game.FIELD_Y + this.camera.y * this.backGroundCoef;
+			var sourceY = Math.max(0, this.backGround.heigth - game.FIELD_Y + this.camera.y * this.backGroundCoef);
 			this.ctx.drawImage(this.backGround.picture(), 
 			0, sourceY, this.backGround.width, this.backGround.width, 	//source
 			0, 0, game.FIELD_X * this.kX, game.FIELD_Y * this.kY);		//destination
