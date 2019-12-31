@@ -7,13 +7,13 @@ class Engine{
 }
 
 class GraphicEngine extends Engine{
-	constructor(context, backGround, camera = new Camera()){
+	constructor(context, backGround,  worldHeight, camera = new Camera()){
 		super();
 		this.ctx = context;
 		this.kX = 1;
 		this.kY = 1;
-		this.backGroundCoef = 1/5;
 		this.backGround = backGround;
+		this.backGroundCoef = this.backGround.heigth / Math.abs(worldHeight - constants.FIELD_Y);
 		this.camera = camera;
 	}
 	work(kX, kY){
@@ -38,19 +38,20 @@ class GraphicEngine extends Engine{
 
 	proceedDynamics(){
 		this.render(game.Cat);
+//		this.render(game.Stormy);
 	}
 	
 	drawBackground(){
-		if(this.backGround.heigth > game.FIELD_Y){
-			var sourceY = Math.max(0, this.backGround.heigth - game.FIELD_Y + this.camera.y * this.backGroundCoef);
+		if(this.backGround.heigth > constants.FIELD_Y){
+			var sourceY = Math.max(0, this.backGround.heigth - constants.FIELD_Y + this.camera.y * this.backGroundCoef);
 			this.ctx.drawImage(this.backGround.picture(), 
-			0, sourceY, this.backGround.width, this.backGround.width, 	//source
-			0, 0, game.FIELD_X * this.kX, game.FIELD_Y * this.kY);		//destination
+					0, sourceY, this.backGround.width, this.backGround.width, 	//source
+					0, 0, constants.FIELD_X * this.kX, constants.FIELD_Y * this.kY);		//destination
 		}
 		else {
 			this.ctx.drawImage(this.backGround.picture(), 
-			0, 0, 
-			game.FIELD_X * this.kX, game.FIELD_Y * this.kY);
+					0, 0, 
+					constants.FIELD_X * this.kX, constants.FIELD_Y * this.kY);
 		}
 		if(game.frameCounter)
 		game.frameCounter.framesCalled++;
@@ -65,18 +66,22 @@ class GraphicEngine extends Engine{
 }
 
 class PhisicalEngine extends Engine{
-	constructor(){super();}
+	constructor(){
+		super();
+		this.gonnaWin = false;
+		this.winHeigth = 0;
+	}
 	
 	proceedDynamics(){
-		game.Cat.accelerate(game.GRAVITY);
+		game.Cat.accelerate(constants.GRAVITY);
 		if(isKeyRight){
-			game.Cat.accelerate(game.ACCEL_LEFT);
+			game.Cat.accelerate(constants.ACCEL_LEFT);
 		}
 		if(isKeyLeft){
-			game.Cat.accelerate(game.ACCEL_RIGTH);
+			game.Cat.accelerate(constants.ACCEL_RIGTH);
 		}
 		if(!isKeyRight && !isKeyRight) {
-			game.Cat.deccelerate(game.DECCELERATION);
+			game.Cat.deccelerate(constants.DECCELERATION);
 		}
 		var collideAccel = game.Cat.jumpIfCollide(game.Platforms);
 		if(collideAccel){
@@ -84,23 +89,44 @@ class PhisicalEngine extends Engine{
 			game.Cat.accelerate(collideAccel);
 		}
 		game.Cat.moveSelf();
+
+		if(this.gonnaWin){
+			if(game.Cat.Y + game.Cat.heigth < this.winHeigth){
+				if(game.Cat.X <= 556 && game.Cat.X >= 150);{
+					game.gameWin();
+				}
+			}
+		}
 	}
 	proceedStatics = function(){
-		var botElemY = game.Cat.Y - game.CAT_MAX_HEIGTH + game.FIELD_Y;
+		var botElemY = game.Cat.Y - constants.CAT_MAX_HEIGTH + constants.FIELD_Y;
 		this.deleteIfNeeded(game.Platforms, botElemY);
 		
-		var topElemY = this.getTopElementY(game.Platforms);
-		var minCreationHeigth = game.Cat.Y - game.RENDER_DISTANCE; 
-		var maxCreationHeigth = game.Camera.y - game.RENDER_DISTANCE; 
-		this.createIfNeeded(game.Platforms, topElemY, minCreationHeigth, minCreationHeigth, maxCreationHeigth);
+		var topElem = this.getTopElement(game.Platforms);
+		var topElemY = topElem.Y;
+		var minCreationHeigth = game.Cat.Y - constants.RENDER_DISTANCE; 
+		var maxCreationHeigth = game.Camera.y - constants.RENDER_DISTANCE; 
+		if(topElemY > game.winCondition){
+			this.createIfNeeded(game.Platforms, topElemY, minCreationHeigth, minCreationHeigth, maxCreationHeigth);
+		}
+		else{
+			if(!this.gonnaWin){
+				this.winHeigth = topElemY - 200;
+				game.Platforms.push(game.factory.makeNewStatic(256, 50,  'flat',   300, this.winHeigth));
+				game.Platforms.push(game.factory.makeNewStatic(169, 105, 'stormy', 333, this.winHeigth - 80));
+				this.gonnaWin = true;
+			}
+		}
 	}
-	getTopElementY(objects){
-		var topElemY = 0;
+	getTopElement(objects){
+		var topElem;
 		objects.forEach(element => {
-			if(element.Y < topElemY)
-			topElemY = element.Y;
+			if(topElem == null)
+				topElem = element;
+			if(element.Y < topElem.Y)
+				topElem = element;
 		});
-		return topElemY;
+		return topElem;
 	}
 	deleteIfNeeded(objects, lowerLevel){
 		objects.forEach(element => {
@@ -111,13 +137,13 @@ class PhisicalEngine extends Engine{
 		});
 	}
 	createIfNeeded(objects, topElemY, minHeigth, maxHeigth){
-		var nextBlockHeigth = topElemY - game.MIN_DISTANCE_BETWEEN_BLOCKS
+		var nextBlockHeigth = topElemY - constants.MIN_DISTANCE_BETWEEN_BLOCKS
 		if(nextBlockHeigth > minHeigth){//&& nextBlockHeigth > maxHeigth){
 			var offset = 50 * (Math.random() - 0.5);
 			objects.push(game.factory.makeRandomStatic('flat', nextBlockHeigth - offset));
 		}
 	}
 	isCatFelt(){
-		return (game.Cat.Y >= game.Camera.y + game.FIELD_Y + 200);
+		return (game.Cat.Y >= game.Camera.y + constants.FIELD_Y + 200);
 	}
 }

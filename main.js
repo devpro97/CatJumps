@@ -5,6 +5,8 @@ var windowResizer = new WindowResizer(canva);
 windowResizer.resizeToScreen();
 window.onresize = () => windowResizer.tryResize();
 
+var constants = new Constants();
+
 var isKeyLeft = false;
 var isKeyRight = false;
 addKeyHandlers();
@@ -15,4 +17,7 @@ var picturer = new Picturer(ctx);
 
 var game = new Game();
 game.startup();
-game.startGame();
+game.gameStart();
+setTimeout(() => {
+    game.startGame();
+}, 5000);

@@ -70,11 +70,13 @@ class Factory{
 	makeRandomStatic(picId = 'flat', Y = 0){
 		this.statId++;
 		var rnd = Math.random();
-		var x = rnd * (game.FIELD_X - this.basicStatWidth);
+		var x = rnd * (constants.FIELD_X - this.basicStatWidth);
+		console.log('created id=' + this.statId + ' '+ picId + ' at x=' + x + ' y=' + Y);
 		return new Platform(this.statId, this.basicStatWidth, this.basicStatHeight, picId, x, Y);
 	}
 	makeNewStatic(width, heigth, picId, X = 0, Y = 0){
 		this.statId++;
+		console.log('created id=' + this.statId+ ' ' + picId + ' at x=' + X + ' y=' + Y);
 		return new Platform(this.statId, width, heigth, picId, X, Y);
 	}
 }
@@ -87,6 +89,9 @@ function addPics(){
     addPic('BG1',               'night.jpg',    600, 1422);
     addPic('BG2',               'day.jpg',      600, 1422);
     addPic('falling',           'falling.png',  800, 800);
+    addPic('happyEnd',          'happyEnd.png', 640, 640);
+    addPic('interest',          'interest.png', 800, 800);
+    addPic('stormy',          	'stormy.png',  	480, 335);
     function addPic(id, url, width, heigth){
         this.Pics[id] = new Sprite(url, width, heigth);
     }

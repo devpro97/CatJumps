@@ -67,6 +67,7 @@ class Picturer{
         this.ctx.globalAlpha = 1;
     }
     start(){
+        clearInterval(this.drawingCallback);
         drawingCallback = setInterval(() => {
             this.ctx.globalAlpha = 1;
             ctx.fillStyle = "white";
@@ -74,7 +75,7 @@ class Picturer{
         }, game.mainLoopDelay);
     }
     stop(){
-        clearInterval(drawingCallback);
+        clearInterval(this.drawingCallback);
     }
 }
 
@@ -88,14 +89,14 @@ class Camera{
         this.maxY;
     }
     prepareCamera(){
-        var minCamHeigth = game.Cat.Y - game.CAT_MAX_HEIGTH;
+        var minCamHeigth = game.Cat.Y - constants.CAT_MAX_HEIGTH;
         if(minCamHeigth < this.y){
             this.y = minCamHeigth;
         }
 
         this.minX = this.x;
         this.minY = this.y;
-        this.maxX = this.x + game.FIELD_X;
-        this.maxY = this.y + game.FIELD_Y;    
+        this.maxX = this.x + constants.FIELD_X;
+        this.maxY = this.y + constants.FIELD_Y;    
     }
 }

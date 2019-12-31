@@ -71,7 +71,7 @@ class aCat extends Obj{
                     //console.log('id=' + obstacle.id + ' FacticY=' + obstacleFacticY + ' nexty=' + nextY + ' baseY='+ this.baseY());
                     if(obstacleFacticY <= nextY)
                     {
-                        jumpStrength = game.JUMP_SRENGTH;
+                        jumpStrength = constants.JUMP_SRENGTH;
                     }
                 }
             }
