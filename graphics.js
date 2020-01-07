@@ -1,9 +1,11 @@
 var pathToPictures = 'content';
 class Sprite{
-    constructor(name, width, heigth){
+    constructor(name, width = 0, heigth = 0, isLocal = true){
         this.width = width;
         this.heigth = heigth;
-        this.src = pathToPictures + '/' + name;
+        this.src = (isLocal)
+            ? pathToPictures + '/' + name
+            : name;
         this.pic = null;
     }
     picture(){
@@ -12,8 +14,12 @@ class Sprite{
                 return this.pic;
             }
         }
-        this.pic = new Image(this.width, this.heigth);
-        this.pic.src = this.src; 
+        this.pic = new Image();
+        this.pic.src = this.src;
+        this.pic.onload = () => {
+            this.width = this.pic.width;
+            this.height = this.pic.height;
+        }
         return this.pic;
     }
 }

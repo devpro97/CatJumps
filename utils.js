@@ -65,7 +65,7 @@ class Factory{
 		this.dynId = 0;
 		this.statId = 0;
 		this.basicStatWidth = 256;
-		this.basicStatHeight = 50;
+		this.basicStatHeight = 100;
 	}
 	makeRandomStatic(picId = 'flat', Y = 0){
 		this.statId++;
@@ -83,17 +83,18 @@ class Factory{
 
 
 function addPics(){
-    addPic('flat',              'flat.png',     256, 50);
+    addPic('flat',              'flat.png',     256, 100);
     addPic('glasses',		    'glasses.png',  506, 317);
     addPic('pursheen',          'pursheen.png', 372, 229);
     addPic('BG1',               'night.jpg',    600, 1422);
-    addPic('BG2',               'day.jpg',      600, 1422);
+    addPic('BG2',               'sunset.jpg');
+    addPic('BG3',               'day.jpg');
     addPic('falling',           'falling.png',  800, 800);
     addPic('happyEnd',          'happyEnd.png', 640, 640);
     addPic('interest',          'interest.png', 800, 800);
     addPic('stormy',          	'stormy.png',  	480, 335);
-    function addPic(id, url, width, heigth){
-        this.Pics[id] = new Sprite(url, width, heigth);
+    function addPic(id, url, width, heigth, isLocal){
+        this.Pics[id] = new Sprite(url, width, heigth, isLocal);
     }
 }
 function addKeyHandlers() {   

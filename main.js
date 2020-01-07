@@ -14,30 +14,27 @@ var Pics = [];
 addPics();
 var picturer = new Picturer(ctx);
 
-var game;
+var game = new Game();
 
 function newGameEasy(){
     clearButtons();
-    game = new Game(-6500, 'pursheen', 'BG1');
-    newGameStart();
+    newGameStart(-6500, 'pursheen', 'BG2');
 }
 function newGameNormal(){
     clearButtons();
-    game = new Game(-20000, (Math.random() > 0.5) ? 'pursheen' : 'glasses', 'BG1', 2);
-    newGameStart();
+    newGameStart(-16000, (Math.random() > 0.5) ? 'pursheen' : 'glasses', 'BG1', 2);
 }
 function newGameHard(){
     clearButtons();
-    game = new Game(-50000, 'glasses', 'BG1', 3);
-    newGameStart();
+    newGameStart(-50000, 'glasses', 'BG1', 3);
 }
 function clearButtons(){
     var elem = document.getElementById('buttons');
     elem.parentNode.removeChild(elem);
 }
-function newGameStart(){
+function newGameStart(wincondition, catId, bgId, hardness){
     addKeyHandlers();
-    game.startup();
+    game.startup(wincondition, catId, bgId, hardness);
     game.gameStart();
     setTimeout(() => {
         game.startGame();

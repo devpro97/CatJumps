@@ -16,30 +16,33 @@ class Constants{
     }
 }
 class Game{
-    constructor(winCondition, catSpriteId, bgId, hardness = 1){
-        this.winCondition = winCondition;
+    constructor(){
+        this.winCondition = 10000;
         this.factory = new Factory();
         this.Platforms = [];
-        this.Cat = catSpriteId;
+        this.Cat = null;
         this.Stormy;
         this.Camera = new Camera();
         
         this.fps = 60;
         this.mainLoopDelay = 1000 / this.fps;
         
-        this.graphicEngine = new GraphicEngine(ctx, Pics[bgId], this.winCondition, this.Camera);
+        this.graphicEngine = new GraphicEngine(ctx, this.Camera);
         this.phisicalEngine = new PhisicalEngine();
         this.GraphicLoop = null;
         this.PhisicsLoop = null;
         
         this.frameCounter = new FramerateCounter();
-        constants.GRAVITY.Yval *= (2 + hardness) / 3;
-        constants.JUMP_SRENGTH.Yval *= (2 + hardness) / 3;
-        constants.MIN_DISTANCE_BETWEEN_BLOCKS *= (1 + hardness) / 2;
     }
-    startup(){
-        this.Cat = new aCat(0, 169, 105, this.Cat, 300, 550);
+    startup(winCondition, catId = 'pursheen', bgId = 'day', hardness = 1){
+        this.Cat = new aCat(0, 169, 105, catId, 300, 550);
+        this.winCondition = winCondition;
 //        this.Stormy = new aCat(1, 169, 105, 'stormy',  300, 550);
+        this.graphicEngine.changeBackground(Pics[bgId], this.winCondition)
+
+        constants.GRAVITY.Yval *= (1 + hardness) / 2;
+        constants.JUMP_SRENGTH.Yval *= (1 + hardness) / 2;
+        constants.MIN_DISTANCE_BETWEEN_BLOCKS *= (1 + hardness) / 2;
 
         var ycoord = 725;
         this.Platforms = [

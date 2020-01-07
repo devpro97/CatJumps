@@ -7,15 +7,22 @@ class Engine{
 }
 
 class GraphicEngine extends Engine{
-	constructor(context, backGround,  worldHeight, camera = new Camera()){
+	constructor(context, camera = new Camera()){
 		super();
 		this.ctx = context;
 		this.kX = 1;
 		this.kY = 1;
-		this.backGround = backGround;
-		this.backGroundCoef = this.backGround.heigth / Math.abs(worldHeight - constants.FIELD_Y);
+		this.backGround = null;
+		this.backGroundCoef = 0;
 		this.camera = camera;
 	}
+
+	changeBackground(backGround,  worldHeight){
+		this.backGround = backGround.picture();
+		this.backGroundCoef = 1;
+		
+	}
+
 	work(kX, kY){
 		this.kX = kX;
 		this.kY = kY;
@@ -28,11 +35,6 @@ class GraphicEngine extends Engine{
 	proceedStatics(){
 		game.Platforms.forEach(element => {
 			this.render(element);
-		// 	var screenX = (element.X - this.camera.x) * this.kX;
-		// 	var screenY = (element.Y - this.camera.Y) * this.kY;
-		// 	this.ctx.drawImage(element.sprite.picture(), 
-		// 						0, 0, element.sprite.width, element.sprite.heigth, 	//source
-		// 						screenX, screenY, element.width * this.kX, element.heigth * this.kY);	//destination
 		});
 	}
 
