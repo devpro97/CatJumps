@@ -13,22 +13,23 @@ var isKeyRight = false;
 var Pics = [];
 addPics();
 var picturer = new Picturer(ctx);
-var spriteManager = new SpriteManager(Pics, 6000);
+var spriteManager = new SpriteManager(Pics, 15000);
 spriteManager.start();
 
 var game = new Game();
+var bgCount = 3;
 
 function newGameEasy(){
     clearButtons();
-    newGameStart(-6500, 'pursheen', 'BG2');
+    newGameStart(-6500, 'pursheen', randomBG(bgCount));
 }
 function newGameNormal(){
     clearButtons();
-    newGameStart(-16000, (Math.random() > 0.5) ? 'pursheen' : 'glasses', 'BG1', 2);
+    newGameStart(-16000, (Math.random() > 0.5) ? 'pursheen' : 'glasses', randomBG(bgCount), 2);
 }
 function newGameHard(){
     clearButtons();
-    newGameStart(-50000, 'glasses', 'BG1', 3);
+    newGameStart(-50000, 'glasses', randomBG(bgCount), 3);
 }
 function clearButtons(){
     var elem = document.getElementById('buttons');
@@ -41,4 +42,8 @@ function newGameStart(wincondition, catId, bgId, hardness){
     setTimeout(() => {
         game.startGame();
     }, 5000);
+}
+function randomBG( bgCount ){
+    var rndFloat = Math.random() * bgCount;
+    return 'BG' + Math.ceil(rndFloat); 
 }

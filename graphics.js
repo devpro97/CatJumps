@@ -7,20 +7,20 @@ class SpriteManager{
         this.managedSprites = sprites;
     }
     start(){
-        clearInterval( this.clearInterval );
-        this.collectLoop = setInterval( () => this.cleanup(), this.timespan );
+        clearInterval( this.collectLoop );
+        this.collectLoop = setInterval( () => this.cleanup(), this.delay );
     }
     stop(){
-        clearInterval( this.clearInterval );
+        clearInterval( this.collectLoop );
     }
     forceClean(){
         this.cleanup();
         this.start();
     }
     cleanup(){
-        this.managedSprites.forEach(element => {
-            element.cleanup();
-        });
+        for( var index in this.managedSprites ){
+            this.managedSprites[index].cleanup();
+        };
     }
 }
 

@@ -94,7 +94,8 @@ function addPics(){
     addPic('interest',          'interest.png', 800, 800);
     addPic('stormy',          	'stormy.png',  	480, 335);
     function addPic(id, url, width, heigth, isLocal){
-        this.Pics[id] = new Sprite(url, width, heigth, isLocal);
+		Pics[id] = new Sprite(url, width, heigth, isLocal);
+		Pics.length++;
     }
 }
 function addKeyHandlers() {   
