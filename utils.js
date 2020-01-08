@@ -91,9 +91,9 @@ function addPics(){
     addPic('BG3',               'day.jpg', 		1241, 2118);
     addPic('falling',           'falling.png',  800, 800);
     addPic('happyEnd',          'happyEnd.png', 640, 640);
-    addPic('interest',          'interest.png', 800, 800);
+    addPic('interest',          'interest.png', 800, 800, 1000);
     addPic('stormy',          	'stormy.png',  	480, 335);
-    function addPic(id, url, width, heigth, isLocal){
+    function addPic(id, url, width, heigth, lifetime = 60000, isLocal = true){
 		Pics[id] = new Sprite(url, width, heigth, isLocal);
 		Pics.length++;
     }
