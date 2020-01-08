@@ -9,6 +9,8 @@ class Constants{
 
         this.FIELD_X = 800;
         this.FIELD_Y = 800;
+        this.FIELD_PROPORTION = this.FIELD_X / this.FIELD_Y;
+        
         this.MIN_DISTANCE_BETWEEN_BLOCKS = 150;
         this.CAT_MAX_HEIGTH = 300;
         

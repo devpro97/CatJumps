@@ -13,6 +13,8 @@ var isKeyRight = false;
 var Pics = [];
 addPics();
 var picturer = new Picturer(ctx);
+var spriteManager = new SpriteManager(Pics, 6000);
+spriteManager.start();
 
 var game = new Game();
 

@@ -87,8 +87,8 @@ function addPics(){
     addPic('glasses',		    'glasses.png',  506, 317);
     addPic('pursheen',          'pursheen.png', 372, 229);
     addPic('BG1',               'night.jpg',    600, 1422);
-    addPic('BG2',               'sunset.jpg');
-    addPic('BG3',               'day.jpg');
+    addPic('BG2',               'sunset.jpg', 	1242, 2208);
+    addPic('BG3',               'day.jpg', 		1241, 2118);
     addPic('falling',           'falling.png',  800, 800);
     addPic('happyEnd',          'happyEnd.png', 640, 640);
     addPic('interest',          'interest.png', 800, 800);

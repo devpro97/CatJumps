@@ -1,26 +1,68 @@
 var pathToPictures = 'content';
+
+class SpriteManager{
+    constructor( sprites, timespan = 60000 ){
+        this.collectLoop;
+        this.delay = timespan;
+        this.managedSprites = sprites;
+    }
+    start(){
+        clearInterval( this.clearInterval );
+        this.collectLoop = setInterval( () => this.cleanup(), this.timespan );
+    }
+    stop(){
+        clearInterval( this.clearInterval );
+    }
+    forceClean(){
+        this.cleanup();
+        this.start();
+    }
+    cleanup(){
+        this.managedSprites.forEach(element => {
+            element.cleanup();
+        });
+    }
+}
+
 class Sprite{
-    constructor(name, width = 0, heigth = 0, isLocal = true){
+    constructor(name, width, heigth, isLocal = true, lifetimeMs = 6000){
         this.width = width;
         this.heigth = heigth;
+
         this.src = (isLocal)
             ? pathToPictures + '/' + name
             : name;
-        this.pic = null;
+
+        this.image = null;
+        this.picture = this.initialize;
+
+        this.lastUsedTime = this.now();
+        this.lifetime = lifetimeMs;
     }
-    picture(){
-        if(this.pic == null) {
-            this.picture = () => {
-                return this.pic;
-            }
+
+    picture(){}
+    
+    initialize(){
+        this.lastUsedTime = this.now();
+        this.picture = this.getPicture;
+        this.image = new Image();
+        this.image.src = this.src;
+        return this.image;
+    }
+    getPicture(){
+        this.lastUsedTime = this.now();
+        return this.image;
+    }
+    cleanup(){
+        if (this.image == null || this.now() - this.lastUsedTime <= this.lifetime){
+            return;
         }
-        this.pic = new Image();
-        this.pic.src = this.src;
-        this.pic.onload = () => {
-            this.width = this.pic.width;
-            this.height = this.pic.height;
-        }
-        return this.pic;
+        this.image.src = null;
+        this.image = null;
+        this.picture = this.initialize;
+    }
+    now(){
+        return new Date();
     }
 }
 

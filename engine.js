@@ -7,20 +7,22 @@ class Engine{
 }
 
 class GraphicEngine extends Engine{
-	constructor(context, camera = new Camera()){
+	constructor(context, dynamics, statics, camera = new Camera()){
 		super();
 		this.ctx = context;
+		this.dynamics = dynamics;
+		this.statics = statics;
+
 		this.kX = 1;
 		this.kY = 1;
 		this.backGround = null;
-		this.backGroundCoef = 0;
+		this.backGroundCoef = -1;
 		this.camera = camera;
 	}
 
-	changeBackground(backGround,  worldHeight){
-		this.backGround = backGround.picture();
-		this.backGroundCoef = 1;
-		
+	changeBackground(backGround, worldHeight){
+		this.backGround = backGround;
+		this.backGroundCoef = backGround.heigth / Math.abs(worldHeight - backGround.width);
 	}
 
 	work(kX, kY){
@@ -45,9 +47,10 @@ class GraphicEngine extends Engine{
 	
 	drawBackground(){
 		if(this.backGround.heigth > constants.FIELD_Y){
-			var sourceY = Math.max(0, this.backGround.heigth - constants.FIELD_Y + this.camera.y * this.backGroundCoef);
-			this.ctx.drawImage(this.backGround.picture(), 
-					0, sourceY, this.backGround.width, this.backGround.width, 	//source
+			var supposedSourceY = this.camera.y * this.backGroundCoef + this.backGround.heigth - this.backGround.width;
+			var sourceY = Math.max(0, supposedSourceY);
+			this.ctx.drawImage(this.backGround.picture(),
+					0, sourceY, this.backGround.width, this.backGround.width / constants.FIELD_PROPORTION, 				//source
 					0, 0, constants.FIELD_X * this.kX, constants.FIELD_Y * this.kY);		//destination
 		}
 		else {
@@ -56,7 +59,7 @@ class GraphicEngine extends Engine{
 					constants.FIELD_X * this.kX, constants.FIELD_Y * this.kY);
 		}
 		if(game.frameCounter)
-		game.frameCounter.framesCalled++;
+			game.frameCounter.framesCalled++;
 	}
 	render(object) {
 		var screenX = (object.X - this.camera.x) * this.kX;
