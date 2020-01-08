@@ -103,7 +103,7 @@ class PhisicalEngine extends Engine{
 			}
 		}
 	}
-	proceedStatics = function(){
+	proceedStatics(){
 		var botElemY = game.Cat.Y - constants.CAT_MAX_HEIGTH + constants.FIELD_Y;
 		this.deleteIfNeeded(game.Platforms, botElemY);
 		
@@ -117,8 +117,8 @@ class PhisicalEngine extends Engine{
 		else{
 			if(!this.gonnaWin){
 				this.winHeigth = topElemY - 200;
-				game.Platforms.push(game.factory.makeNewStatic(256, 50,  'flat',   300, this.winHeigth));
-				game.Platforms.push(game.factory.makeNewStatic(169, 105, 'stormy', 333, this.winHeigth - 80));
+				game.Platforms.push(game.factory.makeNewStatic(256, 100, 'flat',   300, this.winHeigth));
+				game.Platforms.push(game.factory.makeNewStatic(133, 82, 'stormy', 355, this.winHeigth - 50));
 				this.gonnaWin = true;
 			}
 		}

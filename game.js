@@ -48,7 +48,7 @@ class Game{
 
         var ycoord = 725;
         this.Platforms = [
-            this.factory.makeNewStatic(256, 50, 'flat', 300, ycoord)
+            this.factory.makeNewStatic(256, 100, 'flat', 300, 700)
         ]
         while(ycoord > 0){
             ycoord -= constants.MIN_DISTANCE_BETWEEN_BLOCKS;
