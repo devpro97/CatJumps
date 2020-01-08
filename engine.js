@@ -85,7 +85,7 @@ class PhisicalEngine extends Engine{
 		if(isKeyLeft){
 			game.Cat.accelerate(constants.ACCEL_RIGTH);
 		}
-		if(!isKeyRight && !isKeyRight) {
+		if(!isKeyRight && !isKeyLeft) {
 			game.Cat.deccelerate(constants.DECCELERATION);
 		}
 		var collideAccel = game.Cat.jumpIfCollide(game.Platforms);

@@ -38,11 +38,11 @@ class aCat extends Obj{
         this.speed.accelerate(accel);
     }
     deccelerate(deccel) {
-        if(this.speed.Xval > 0){
+        if(this.speed.Xval > deccel){
             this.acceleration.Xval -= deccel;
             return;
         }
-        if(this.speed.Xval < 0){
+        if(this.speed.Xval < (0 - deccel)){
             this.acceleration.Xval += deccel;
             return;
         }
