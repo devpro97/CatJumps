@@ -7,15 +7,24 @@ class Engine{
 }
 
 class GraphicEngine extends Engine{
-	constructor(context, backGround,  worldHeight, camera = new Camera()){
+	constructor(context, dynamics, statics, camera = new Camera()){
 		super();
 		this.ctx = context;
+		this.dynamics = dynamics;
+		this.statics = statics;
+
 		this.kX = 1;
 		this.kY = 1;
-		this.backGround = backGround;
-		this.backGroundCoef = this.backGround.heigth / Math.abs(worldHeight - constants.FIELD_Y);
+		this.backGround = null;
+		this.backGroundCoef = -1;
 		this.camera = camera;
 	}
+
+	changeBackground(backGround, worldHeight){
+		this.backGround = backGround;
+		this.backGroundCoef = backGround.heigth / Math.abs(worldHeight - backGround.width);
+	}
+
 	work(kX, kY){
 		this.kX = kX;
 		this.kY = kY;
@@ -28,11 +37,6 @@ class GraphicEngine extends Engine{
 	proceedStatics(){
 		game.Platforms.forEach(element => {
 			this.render(element);
-		// 	var screenX = (element.X - this.camera.x) * this.kX;
-		// 	var screenY = (element.Y - this.camera.Y) * this.kY;
-		// 	this.ctx.drawImage(element.sprite.picture(), 
-		// 						0, 0, element.sprite.width, element.sprite.heigth, 	//source
-		// 						screenX, screenY, element.width * this.kX, element.heigth * this.kY);	//destination
 		});
 	}
 
@@ -43,9 +47,10 @@ class GraphicEngine extends Engine{
 	
 	drawBackground(){
 		if(this.backGround.heigth > constants.FIELD_Y){
-			var sourceY = Math.max(0, this.backGround.heigth - constants.FIELD_Y + this.camera.y * this.backGroundCoef);
-			this.ctx.drawImage(this.backGround.picture(), 
-					0, sourceY, this.backGround.width, this.backGround.width, 	//source
+			var supposedSourceY = this.camera.y * this.backGroundCoef + this.backGround.heigth - this.backGround.width;
+			var sourceY = Math.max(0, supposedSourceY);
+			this.ctx.drawImage(this.backGround.picture(),
+					0, sourceY, this.backGround.width, this.backGround.width / constants.FIELD_PROPORTION, 				//source
 					0, 0, constants.FIELD_X * this.kX, constants.FIELD_Y * this.kY);		//destination
 		}
 		else {
@@ -54,7 +59,7 @@ class GraphicEngine extends Engine{
 					constants.FIELD_X * this.kX, constants.FIELD_Y * this.kY);
 		}
 		if(game.frameCounter)
-		game.frameCounter.framesCalled++;
+			game.frameCounter.framesCalled++;
 	}
 	render(object) {
 		var screenX = (object.X - this.camera.x) * this.kX;
