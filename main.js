@@ -12,7 +12,7 @@ var isKeyRight = false;
 
 var Pics = [];
 addPics();
-var picturer = new Picturer(ctx);
+var drawer = new Drawer(ctx);
 var spriteManager = new SpriteManager(Pics, 15000);
 spriteManager.start();
 
@@ -20,16 +20,16 @@ var game = new Game();
 var bgCount = 3;
 
 function newGameEasy(){
-    clearButtons();
     newGameStart(-6500, 'pursheen', randomBG(bgCount));
+    clearButtons();
 }
 function newGameNormal(){
-    clearButtons();
     newGameStart(-16000, (Math.random() > 0.5) ? 'pursheen' : 'glasses', randomBG(bgCount), 2);
+    clearButtons();
 }
 function newGameHard(){
-    clearButtons();
     newGameStart(-50000, 'glasses', randomBG(bgCount), 3);
+    clearButtons();
 }
 function clearButtons(){
     var elem = document.getElementById('buttons');
@@ -38,10 +38,18 @@ function clearButtons(){
 function newGameStart(wincondition, catId, bgId, hardness){
     addKeyHandlers();
     game.startup(wincondition, catId, bgId, hardness);
-    game.gameStart();
-    setTimeout(() => {
+    if(noIntro()){
         game.startGame();
-    }, 5000);
+    }
+    else{
+        game.cutScene();
+        setTimeout(() => {
+            game.startGame();
+        }, 5000);
+    }
+}
+function noIntro(){
+    return document.getElementById("noIntro").checked;
 }
 function randomBG( bgCount ){
     var rndFloat = Math.random() * bgCount;

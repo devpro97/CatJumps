@@ -72,12 +72,12 @@ class Factory{
 		var rnd = Math.random();
 		var x = rnd * (constants.FIELD_X - this.basicStatWidth);
 		console.log('created id=' + this.statId + ' '+ picId + ' at x=' + x + ' y=' + Y);
-		return new Platform(this.statId, this.basicStatWidth, this.basicStatHeight, picId, x, Y);
+		return new Static(this.statId, this.basicStatWidth, this.basicStatHeight, picId, x, Y);
 	}
 	makeNewStatic(width, heigth, picId, X = 0, Y = 0){
 		this.statId++;
 		console.log('created id=' + this.statId+ ' ' + picId + ' at x=' + X + ' y=' + Y);
-		return new Platform(this.statId, width, heigth, picId, X, Y);
+		return new Static(this.statId, width, heigth, picId, X, Y);
 	}
 }
 

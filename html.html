@@ -1,15 +1,30 @@
-<div id='buttons'>
+<head>
+    <script src="engine/Camera.js"></script>
+    <script src="engine/CustomScripts.js"></script>
+    <script src="engine/Drawer.js"></script>
+    <script src="engine/Engine.js"></script>
+    <script src="engine/GraphicalEngine.js"></script>
+    <script src="engine/Objects.js"></script>
+    <script src="engine/PhisicalEngine.js"></script>
+    <script src="engine/Speed.js"></script>
+    <script src="engine/Sprites.js"></script>
+    <script src="scripts/Scripts.js"></script>
+    <script src="game/Constants.js"></script>
+    <script src="game/Game.js"></script>
+</head>
+
+<div id="buttons">
     <button onclick="newGameEasy()">New Game Easy</button>
     <button onclick="newGameNormal()">New Game Normal</button>
     <button onclick="newGameHard()">New Game Hard</button>
+    <div>
+        <input type="checkbox" id="noIntro" checked>
+        <label for="noIntro">No intro</label>
+    </div>
 </div>
-
 <div id="base" align="center">
     <canvas id="canva" width="80" height="80"></canvas>
 </div>
-<script src="phisics.js"></script>
-<script src="engine.js"></script>
-<script src="graphics.js"></script>
+
 <script src="utils.js"></script>
-<script src="game.js"></script>
 <script src="main.js"></script>
